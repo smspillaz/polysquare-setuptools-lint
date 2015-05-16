@@ -296,14 +296,28 @@ def _run_pychecker(filename):
         # This is required to prevent pychecker from checking itself
         os.environ["PYCHECKER_DISABLED"] = "True"
 
+        print("Checking " + filename)
+
+        try:
+            from importlib import reload as rld
+        except ImportError:
+            rld = reload
+
         # We don't always install pychecker, in which case this code should
         # never be reached. However, static analysis tools like pylint
         # don't know this for sure, so import-error needs to be suppressed
         # here.
-        from pychecker import checker  # suppress(import-error)
-        from pychecker import pcmodules as pcm  # suppress(import-error)
-        from pychecker import warn  # suppress(import-error)
-        from pychecker import Config  # suppress(import-error)
+        import pychecker.checker as checker  # suppress(import-error)
+        import pychecker.pcmodules as pcm  # suppress(import-error)
+        import pychecker.warn as warn   # suppress(import-error)
+        import pychecker.Config as Config   # suppress(import-error)
+
+        # Reload all pychecker modules. This reduces the possibility
+        # of false positives due to global variables
+        reload(checker)
+        reload(pcm)
+        reload(warn)
+        reload(Config)
 
         setup_py_file = os.path.realpath(os.path.join(os.getcwd(), "setup.py"))
         if os.path.realpath(filename) == setup_py_file:
@@ -501,6 +515,8 @@ class PolysquareLintCommand(setuptools.Command):  # suppress(unused-function)
             # files to be passed to the linter, pyroma can only be run
             # on /setup.py, etc).
             non_test_files = [f for f in files if not _file_is_test(f)]
+            print(repr(non_test_files))
+            print(repr(files))
             mapped = (mapper(_run_prospector, files) +
                       mapper(_run_flake8, files) +
                       mapper(_run_pychecker, files) +
