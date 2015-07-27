@@ -4,7 +4,6 @@ CPython
 PAT1
 PAT2
 Pylint
-PolysquareLintCommand
 STAMP
 TestCase
 configparser
@@ -23,3 +22,8 @@ suppress
 suppressions
 symlinks
 unittest
+pychecker
+setup_requires
+markdownlint
+pandoc
+runtimes
