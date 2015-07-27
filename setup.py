@@ -5,15 +5,6 @@
 # See /LICENCE.md for Copyright information
 """Installation and setup script for polysquare-setuptools-lint."""
 
-try:
-    from polysquare_setuptools_lint import PolysquareLintCommand
-    _CMDCLASS = {
-        "polysquarelint": PolysquareLintCommand
-    }
-
-except ImportError:
-    _CMDCLASS = dict()
-
 import platform
 
 import sys
@@ -49,7 +40,6 @@ setup(name="polysquare-setuptools-lint",
       license="MIT",
       keywords="development linters",
       packages=find_packages(exclude=["test"]),
-      cmdclass=_CMDCLASS,
       install_requires=[
           "setuptools",
           "jobstamps>=0.0.6",
@@ -83,7 +73,7 @@ setup(name="polysquare-setuptools-lint",
       },
       entry_points={
           "distutils.commands": [
-              ("polysquarelint=polysquare_setuptools_lint:"
+              ("polysquarelint=polysquare_setuptools_lint.main:"
                "PolysquareLintCommand"),
           ]
       },

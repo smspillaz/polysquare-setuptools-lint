@@ -22,3 +22,13 @@ suppress
 suppressions
 symlinks
 unittest
+pychecker
+runtimes
+pandoc
+markdownlint
+setup_requires
+subcommand
+prepended
+__import__
+CONTAINER_DIR
+
