@@ -10,7 +10,16 @@ import errno
 
 import os
 
+import shutil
+
+from mock import Mock
+
+from tempfile import mkdtemp
+
+import polysquare_setuptools_lint
 from polysquare_setuptools_lint import PolysquareLintCommand
+
+from setuptools import Distribution
 
 from testtools import TestCase
 
@@ -39,6 +48,40 @@ class TestPolysquareLintCommand(TestCase):
         self._previous_directory = None
         self._package_name = "package"
         self._distribution = None
+
+    def setUp(self):  # suppress(N802)
+        """Create a temporary directory and put some files in it."""
+        super(TestPolysquareLintCommand, self).setUp()
+        os.environ["_POLYSQUARE_SETUPTOOLS_LINT_TESTING"] = "1"
+        self._previous_directory = os.getcwd()
+
+        project_directory = mkdtemp(prefix=os.path.join(os.getcwd(),
+                                                        "test_project_dir"))
+        os.chdir(project_directory)
+
+        def cleanup_func():
+            """Change into the previous dir and remove the project dir."""
+            os.chdir(self._previous_directory)
+            shutil.rmtree(project_directory)
+
+        self.addCleanup(cleanup_func)
+        self.patch(polysquare_setuptools_lint, "sys_exit", Mock())
+
+        with self._open_test_file():
+            pass
+
+        with self._open_module_file():
+            pass
+
+        with self._open_setup_file() as f:
+            # Write a very basic /setup.py file so that pyroma doesn't trip
+            # and throw an exception.
+            f.write("from setuptools import setup\n"
+                    "setup()\n")
+
+        self._distribution = Distribution(dict(name="my-package",
+                                               version="0.0.1",
+                                               packages=fp(exclude=["test"])))
 
     def test_one(self):
         """Test one."""
