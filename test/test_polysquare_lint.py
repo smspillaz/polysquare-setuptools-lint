@@ -20,6 +20,7 @@ import polysquare_setuptools_lint
 from polysquare_setuptools_lint import PolysquareLintCommand
 
 from setuptools import Distribution
+from setuptools import find_packages as fp
 
 from testtools import TestCase
 
@@ -48,6 +49,34 @@ class TestPolysquareLintCommand(TestCase):
         self._previous_directory = None
         self._package_name = "package"
         self._distribution = None
+
+    def _open_module_file(self):
+        """Open test file and return it as a file object."""
+        return _open_file_force_create(os.path.join(os.getcwd(),
+                                                    self._package_name,
+                                                    "module.py"),
+                                       "w")
+
+    # no-self-use is suppressed here to keep consistency
+    # with _open_module_file.
+    #
+    # suppress(no-self-use)
+    def _open_test_file(self):
+        """Open test file and return it as a file object."""
+        return _open_file_force_create(os.path.join(os.getcwd(),
+                                                    "test",
+                                                    "test.py"),
+                                       "w")
+
+    # no-self-use is suppressed here to keep consistency
+    # with _open_module_file.
+    #
+    # suppress(no-self-use)
+    def _open_setup_file(self):
+        """Open setup file and return it as a file object."""
+        return _open_file_force_create(os.path.join(os.getcwd(),
+                                                    "setup.py"),
+                                       "w")
 
     def setUp(self):  # suppress(N802)
         """Create a temporary directory and put some files in it."""
