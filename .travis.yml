@@ -14,6 +14,7 @@ script:
  - polysquare_run check/python/check.py
 after_success:
  - polysquare_run coverage/python/coverage.py
+ - coveralls debug
 before_cache:
  - polysquare_cleanup
 before_deploy:
