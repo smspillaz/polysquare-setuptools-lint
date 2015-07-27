@@ -114,4 +114,4 @@ class TestPolysquareLintCommand(TestCase):
 
     def test_one(self):
         """Test one."""
-        PolysquareLintCommand()
+        PolysquareLintCommand(self._distribution)
