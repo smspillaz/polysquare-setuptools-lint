@@ -10,6 +10,8 @@ import errno
 
 import os
 
+from polysquare_setuptools_lint import PolysquareLintCommand
+
 from testtools import TestCase
 
 
@@ -37,3 +39,7 @@ class TestPolysquareLintCommand(TestCase):
         self._previous_directory = None
         self._package_name = "package"
         self._distribution = None
+
+    def test_one(self):
+        """Test one."""
+        PolysquareLintCommand()
