@@ -34,4 +34,9 @@ class PolysquareLintCommand(setuptools.Command):  # suppress(unused-function)
         """Finalize all options."""
         pass
 
-    user_options = []
+    user_options = [  # suppress(unused-variable)
+        ("suppress-codes=", None, """Error codes to suppress"""),
+        ("exclusions=", None, """Glob expressions of files to exclude"""),
+        ("stamp-directory=", None,
+         """Where to store stamps of completed jobs""")
+    ]
