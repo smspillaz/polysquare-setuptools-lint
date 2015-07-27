@@ -33,3 +33,5 @@ class PolysquareLintCommand(setuptools.Command):  # suppress(unused-function)
     def finalize_options(self):  # suppress(unused-function)
         """Finalize all options."""
         pass
+
+    user_options = []
